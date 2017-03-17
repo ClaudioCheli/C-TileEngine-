@@ -7,8 +7,10 @@
 
 #include "PlayerAnimation.h"
 
-PlayerAnimation::PlayerAnimation(GLuint animationLength, std::vector<GLuint> frameTextureId) : Animation(animationLength, frameTextureId){
-
+PlayerAnimation::PlayerAnimation(GLuint animationLength, std::vector<GLuint> frameTextureId, std::string name){
+	this->animationLength = animationLength;
+	this->frameTextureId = frameTextureId;
+	this->name = name;
 }
 
 void PlayerAnimation::update(){

@@ -15,9 +15,26 @@ public:
 	PlayerShader();
 	~PlayerShader();
 
+	void loadTextureIndex(int textureIndex){loadInt(location_textureIndex, textureIndex);}
+	void loadTilesetNumberOfRows(int tilesetNumberOfRows){loadInt(location_tilesetNumberOfRows, tilesetNumberOfRows);}
+	void loadTilesetNumberOfColumns(int tilesetNumberOfColumns){loadInt(location_tilesetNumberOfColumns, tilesetNumberOfColumns);}
+	void loadModelMatrix(glm::mat4 matrix){loadMatrix(location_modelMatrix, matrix);}
+	void loadProjectionMatrix(glm::mat4 matrix){loadMatrix(location_projectionMatrix, matrix);}
+	void loadViewMatrix(glm::mat4 matrix){loadMatrix(location_viewMatrix, matrix);}
+
 private:
-	std::string VERTEX_SHADER_PATH = "D://Development//Workspace//Windows C++//TileEngine//Debug//shader//playerVertexShader.vs";
-	std::string FRAGMENT_SHADER_PATH = "D://Development//Workspace//Windows C++//TileEngine//Debug//shader//playerFragmentShader.fs";
+	std::string VERTEX_SHADER_PATH = "shader/playerVertexShader.vs";
+	std::string FRAGMENT_SHADER_PATH = "shader/playerFragmentShader.fs";
+	int location_modelMatrix;
+	int location_viewMatrix;
+	int location_projectionMatrix;
+	int location_textureIndex;
+	int location_tilesetNumberOfRows;
+	int location_tilesetNumberOfColumns;
+
+	void getAllUniformLocation();
+	void bindAttributes();
+
 };
 
 

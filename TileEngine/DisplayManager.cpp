@@ -26,6 +26,10 @@ void DisplayManager::CreateDisplay(std::string title){
 	glewInit();
 }
 
+void DisplayManager::setWindowTitle(std::string title){
+	SDL_SetWindowTitle(window, title.c_str());
+}
+
 DisplayManager::~DisplayManager(){
 	SDL_DestroyWindow(window);
 	window = NULL;

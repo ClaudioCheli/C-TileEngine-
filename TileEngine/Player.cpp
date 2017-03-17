@@ -12,57 +12,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-Player::Player(std::string tilesetImagePath, std::string tilesetDefinitionPath, Shader* shader){
-	this->shader = shader;
+Player::Player(){
 
-	position.x = 0.0f;
-	position.y = 0.0f;
-	position.z = 0.0f;
-
-	playerTexture = new Texture();
-	playerTexture->loadTexture(tilesetImagePath.c_str());
-
-	XMLDocument playerXMLFile;
-	GLint errorID = playerXMLFile.LoadFile(tilesetDefinitionPath.c_str());
-	if(errorID == XML_ERROR_FILE_NOT_FOUND)
-		std::cout << "TinyXML error id: " << errorID << std::endl;
-	XMLElement* texture = playerXMLFile.FirstChildElement("Object")->FirstChildElement("Texture");
-	int textureWidth, textureHeight, tilesNumber, tilesWidth, tilesHeight;
-	texture->QueryIntAttribute("width", &textureWidth);
-	texture->QueryIntAttribute("height", &textureHeight);
-	texture->QueryIntAttribute("tilesNumber", &tilesNumber);
-	texture->QueryIntAttribute("tileWidth", &tilesWidth);
-	texture->QueryIntAttribute("tileHeight", &tilesHeight);
-	GLuint columns = textureWidth / tilesWidth;
-	GLuint rows    = textureHeight / tilesHeight;
-	#ifdef DEBUG
-    std::cout << "Player info:" << std::endl
-    		  << "	textureWidth: " << textureWidth << std::endl
-			  << "	textureHeight: " << textureHeight << std::endl
-			  << "	tilesNumber: " << tilesNumber << std::endl
-			  << "	tileWidth: " << tilesWidth << std::endl
-			  << "	tileHeight: " << tilesHeight << std::endl
-			  << "	colums: " << columns << std::endl
-			  << "	rows: " << rows << std::endl;
-	#endif
-	this->tileset   = new Tileset(tilesWidth, tilesHeight, 0, columns, rows, "Player");
-
-	XMLElement* animations = playerXMLFile.FirstChildElement("Object")->FirstChildElement("Animations");
-	XMLElement* animation  = animations->FirstChildElement("Animation");
-	std::vector<GLuint> frameTextureId;
-	int animationLength = 0;
-	animation->QueryIntAttribute("length", &animationLength);
-	frameTextureId = readAnimation(animation, animationLength);
-	this->walkRight = new PlayerAnimation(animationLength, frameTextureId);
-
-	animation = animation->NextSiblingElement("Animation");
-	animation->QueryIntAttribute("length", &animationLength);
-	frameTextureId = readAnimation(animation, animationLength);
-	this->walkLeft = new PlayerAnimation(animationLength, frameTextureId);
-
-	createModelMatrix();
-
-	bindBuffers();
 }
 
 std::vector<GLuint> Player::readAnimation(XMLElement* animation, int animationLength){
@@ -75,19 +26,23 @@ std::vector<GLuint> Player::readAnimation(XMLElement* animation, int animationLe
 	return frameTextureId;
 }
 
-/*
- * Implements from Renderable
- */
 void Player::render(){
 	shader->start();
 
+	bindAttribute();
 	bindTexture();
-	glBindVertexArray(VAO);
 	bindUniform();
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
+	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+	unbindAttribute();
 
 	shader->stop();
+}
+
+void Player::bindAttribute(){
+	glBindVertexArray(VAO);
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 }
 
 void Player::bindProjectionMatrix(glm::mat4 projectionMatrix){
@@ -96,56 +51,88 @@ void Player::bindProjectionMatrix(glm::mat4 projectionMatrix){
 	shader->stop();
 }
 
+void Player::unbindAttribute(){
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glBindVertexArray(0);
+}
+
 void Player::update(){
 
 }
 
 void Player::bindUniform(){
-	tileset->bindNumberOfColumns(shader);
-	tileset->bindNumberOfRows(shader);
-
-	GLuint textureIndex = glGetUniformLocation(shader->getProgramID(), "textureIndex");
-	glUniform1i(textureIndex, 1);
-
-	GLuint modelMatrixLocation = glGetUniformLocation(shader->getProgramID(), "model");
-	glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+	shader->loadModelMatrix(tile->getModelMatrix());
+	shader->loadTilesetNumberOfRows(tilesets[0]->getNumberOfRows());
+	shader->loadTilesetNumberOfColumns(tilesets[0]->getNumberOfColumns());
+	shader->loadTextureIndex(currentAnimation->getCurrentId());
 }
 
 void Player::bindTexture(){
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, playerTexture->getTextureID());
+	glBindTexture(GL_TEXTURE_2D, tilesets[0]->getTextureID());
 }
 
 void Player::bindBuffers(){
 	glGenVertexArrays(1, &VAO);
+	glCheckError();
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);
 
 	glBindVertexArray(VAO);
+	glCheckError();
 
 	//Bind vertexBuffer
+	std::vector<float> vertexArray = tile->getVertexArray();
+	float playerVertex[vertexArray.size()];
+	for(GLuint i=0; i<vertexArray.size(); i++)
+		playerVertex[i] = vertexArray[i];
+
+	std::cout << std::endl;
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(playerVertex), playerVertex, GL_STATIC_DRAW);
+	glCheckError();
 
 	//Bind indexBuffer
+	std::vector<int> indexArray = tile->getIndexArray();
+	int playerIndex[indexArray.size()];
+	for(GLuint i=0; i<indexArray.size(); i++)
+		playerIndex[i] = indexArray[i];
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(playerIndex), playerIndex, GL_STATIC_DRAW);
+	glCheckError();
 
 	//vertexPosition
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
+	glCheckError();
 
 	//texture
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (GLvoid*)(3*sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
+	glCheckError();
 
 	glBindVertexArray(0);
 }
 
-void Player::createModelMatrix(){
+/*void Player::createModelMatrix(){
 	modelMatrix = glm::translate(position)
 				* glm::rotate(0.0f, glm::vec3(0.0f, 1.0f, 0.0f))
 				* glm::scale(glm::vec3(1.0f, 1.0f, 1.0f));
+}*/
+
+void Player::setAnimation(Animation* animation){
+	if(animation->getName().compare("walk_up"))
+		walkUp = animation;
+	if(animation->getName().compare("walk_down"))
+			walkDown = animation;
+	if(animation->getName().compare("walk_left"))
+			walkLeft = animation;
+	if(animation->getName().compare("walk_right"))
+			walkRight = animation;
+	if(animation->getName().compare("idle_down"))
+			idleDown = animation;
 }
 
 

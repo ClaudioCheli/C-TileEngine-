@@ -14,9 +14,23 @@ class TileMapShader: public Shader{
 public:
 	TileMapShader();
 	~TileMapShader();
+
+	void loadTilesetNumberOfRows(int tilesetNumberOfRows);
+	void loadTilesetNumberOfColumns(int tilesetNumberOfColumns);
+	void loadProjectionMatrix(glm::mat4 matrix);
+	void loadViewMatrix(glm::mat4 matrix);
+
 private:
-	std::string VERTEX_SHADER_PATH = "D://Development//Workspace//Windows C++//TileEngine//Debug//shader//tileMapVertexShader.vs";
-	std::string FRAGMENT_SHADER_PATH = "D://Development//Workspace//Windows C++//TileEngine//Debug//shader//tileMapFragmentShader.fs";
+	std::string VERTEX_SHADER_PATH = "shader/tileMapVertexShader.vs";
+	std::string FRAGMENT_SHADER_PATH = "shader/tileMapFragmentShader.fs";
+	int location_viewMatrix;
+	int location_projectionMatrix;
+	int location_tilesetNumberOfRows;
+	int location_tilesetNumberOfColumns;
+
+	void getAllUniformLocation();
+	void bindAttributes();
+
 };
 
 #endif /* BASESHADER_H_ */

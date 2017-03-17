@@ -13,12 +13,46 @@ TileMapShader::TileMapShader(){
 
 	this->vertexShaderID   = compileShader(GL_VERTEX_SHADER, vertexShaderSource);
 	this->fragmentShaderID = compileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+	this->programID = linkToProgram(this->vertexShaderID, this->fragmentShaderID);
 
-	linkToProgram(this->vertexShaderID, this->fragmentShaderID);
+	bindAttributes();
+	getAllUniformLocation();
 }
 
 TileMapShader::~TileMapShader(){
 	glDeleteProgram(programID);
+}
+
+void TileMapShader::getAllUniformLocation(){
+	location_viewMatrix 			= getUniformLocation("view");
+	location_projectionMatrix 		= getUniformLocation("projection");
+	location_tilesetNumberOfRows 	= getUniformLocation("tilesetNumberOfRows");
+	location_tilesetNumberOfColumns = getUniformLocation("tilesetNumberOfColumns");
+}
+
+void TileMapShader::bindAttributes(){
+	bindAttribute(0, "vertexPosition");
+	bindAttribute(1, "texCoord");
+	bindAttribute(2, "tilePosition");
+}
+
+void TileMapShader::loadTilesetNumberOfRows(int tilesetNumberOfRows){
+	loadInt(location_tilesetNumberOfRows, tilesetNumberOfRows);
+}
+
+
+void TileMapShader::loadTilesetNumberOfColumns(int tilesetNumberOfColumns){
+	loadInt(location_tilesetNumberOfColumns, tilesetNumberOfColumns);
+}
+
+
+void TileMapShader::loadProjectionMatrix(glm::mat4 matrix){
+	loadMatrix(location_projectionMatrix, matrix);
+}
+
+
+ void TileMapShader::loadViewMatrix(glm::mat4 matrix){
+	loadMatrix(location_viewMatrix, matrix);
 }
 
 

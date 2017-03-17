@@ -1,5 +1,5 @@
-#version 330 core
-layout (location = 0) in vec3 vertexPosition; // The position variable has attribute position 0
+#version 430 
+layout (location = 0) in vec3 vertexPosition;
 layout (location = 1) in vec2 texCoord;
    
 out vec2 texCoordinate; 
@@ -12,7 +12,7 @@ uniform int tilesetNumberOfRows;
 uniform int tilesetNumberOfColumns;
 
 void main(){	
- 	gl_Position = projection * view * model * vec4(vertexPosition.x, vertexPosition.y, vertexPosition.z-10.0f, 1.0);
+ 	gl_Position = projection * model * vec4(vertexPosition.x, vertexPosition.y, vertexPosition.z+10.0f, 1.0);
     
     float column  	 = mod(textureIndex-1, tilesetNumberOfColumns);
     float row     	 = (textureIndex-1) / tilesetNumberOfRows;

@@ -16,8 +16,8 @@
 
 class Texture{
 public:
-	Texture();
-	void loadTexture(std::string imagePath);
+	Texture(std::string imagePath);
+
 	//unsigned char* getImage(){return image;}
 	glm::vec2 getDimension(){return dimension;}
 	GLuint getTextureID(){return textureID;}
@@ -25,6 +25,8 @@ private:
 	glm::vec2 dimension;
 	unsigned char* image;
 	GLuint textureID;
+
+	void loadTexture(std::string imagePath);
 
 };
 

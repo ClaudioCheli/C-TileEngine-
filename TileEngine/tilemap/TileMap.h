@@ -11,9 +11,10 @@
 #include "../tinyxml2/tinyxml2.h"
 #include <cstdio>
 
+#include "../Entity.h"
 #include "TileLevel.h"
 #include "../Texture.h"
-#include "../Renderable.h"
+#include "../shaders/TileMapShader.h"
 
 
 using namespace tinyxml2;
@@ -25,45 +26,46 @@ static const GLfloat tileVertex[] = {
 		0.0f, 64.0f, 0.0f, 0.0f, 1.0f, // Bottom Left
 		0.0f,  0.0f, 0.0f, 0.0f, 0.0f  // Top Left
 };
-static const GLuint tileIndex[] = {  // Note that we start from 0!
+static const GLuint tileIndex[] = {
 		0, 1, 3, // First Triangle
 		1, 2, 3  // Second Triangle
 };
 
 class TileMap: public Renderable{
 public:
-	TileMap(Shader* shader);
+	TileMap();
+	//TileMap(TileMapShader* shader);
 	~TileMap(){};
 
 	void render();
-	void loadTexture(std::string imagePath);
-	void bindUniform(Shader* shader, GLuint level);
-	void bindBuffers();
-	void bindTileLevelPositions(GLuint level);
-	void bindSSBO(GLuint level);
-	void bindTexture();
-	void loadMapDefinition(std::string mapDefinitionFilePath);
-	void createMap();
-	void printMapData();
-	void printLayerData();
-	void printMapVertexData();
+	void update();
+	void bindAttribute();
+	void bindTexture(GLuint level);
+	void bindUniform(GLuint level);
+	void bindLevelSSBO(GLuint level);
+	void unbindAttribute();
+    void bindProjectionMatrix(glm::mat4 projectionMatrix);
+    void bindBuffers();
+
 
 	GLuint getVAO(){return VAO;}
-	GLuint getTileCount(){return tileCount;}
-	GLuint getTextureID(){return mapTexture->getTextureID();}
-	GLuint getLevelsNumber(){return tileMap.size();}
-	GLuint getVertexCount(){return tileCount * 4;}
+	GLuint getLevelsNumber(){return levels.size();}
 	Shader* getShader(){return shader;}
+	Tileset* getTileset(std::string name){return findTileset(name);}
+	void setTileset(std::vector<Tileset*> tilesets){this->tilesets = tilesets;}
+	void setTileLevels(std::vector<TileLevel*> tileLevels){this->levels = tileLevels;}
+	void setShader(TileMapShader* shader){ this->shader = shader;}
 
 private:
 	GLuint VAO, VBO, EBO, positionVBO;
-	Shader* shader;
-	XMLDocument mapXMLFile;
-	Texture* mapTexture;
-	glm::vec2 mapDimension;
-	GLuint tileCount;
+	TileMapShader* shader;
+	std::vector<GLuint> ssbo;
+	GLuint indexCount = 6;
+	GLuint vertexCount = 4;
+	//glm::vec2 mapDimension;
+	//GLuint tileCount;
 	std::vector< Tileset* > tilesets;
-	std::vector< TileLevel* > tileMap;
+	std::vector< TileLevel* > levels;
 
 	std::vector< std::vector<GLint> > getIntData(std::vector<std::string>);
 	Tileset* findTileset(std::string name);

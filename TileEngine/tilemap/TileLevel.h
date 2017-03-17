@@ -18,6 +18,7 @@
 
 class TileLevel{
 public:
+	TileLevel();
 	TileLevel(const GLchar* layerData, Tileset* tileset, GLuint width, GLuint height);
 	~TileLevel(){}
 
@@ -28,6 +29,8 @@ public:
 	glm::vec2 getLevelDimensions(){return glm::vec2(levelWidth, levelHeight);}
 	std::vector< glm::vec3 > getTilePositions(){return tilePositions;}
 	GLuint getLevelDepth(){return levelDepth;}
+	Tileset* getTileset(){return tileset;}
+	std::vector< GLuint > getTileIDs(){return tileIDs;}
 
 private:
 	Tileset* tileset;

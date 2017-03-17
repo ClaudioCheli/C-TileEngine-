@@ -1,25 +1,23 @@
 /*
  * Renderable.h
  *
- *  Created on: 01 feb 2017
+ *  Created on: 14 mar 2017
  *      Author: Claudio
  */
 
 #ifndef RENDERABLE_H_
 #define RENDERABLE_H_
 
-#define GLEW_STATIC
-#include <GL/glew.h>
+#include <glm/glm.hpp>
 
 class Renderable{
 public:
-	Renderable(){};
+	Renderable(){}
 	virtual ~Renderable(){};
 
 	virtual void render()=0;
-
-protected:
-	virtual void bindTexture()=0;
+	virtual void update()=0;
+	virtual void bindProjectionMatrix(glm::mat4 projectionMatrix)=0;
 
 };
 

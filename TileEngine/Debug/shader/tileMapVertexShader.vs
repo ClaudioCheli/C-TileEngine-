@@ -1,4 +1,4 @@
-#version 330 core
+#version 430 
 layout (location = 0) in vec3 vertexPosition; // The position variable has attribute position 0
 layout (location = 1) in vec2 texCoord;
 layout (location = 2) in vec3 tilePosition;
@@ -16,7 +16,7 @@ uniform int tilesetNumberOfRows;
 uniform int tilesetNumberOfColumns;
 
 void main(){	
- 	gl_Position = projection * view * vec4(vertexPosition.x + tilePosition.x, vertexPosition.y + tilePosition.y, vertexPosition.z - 10.0, 1.0);
+ 	gl_Position = projection * vec4(vertexPosition.x + tilePosition.x, vertexPosition.y + tilePosition.y, vertexPosition.z - 10.0, 1.0);
     
     int textureIndex = textureIdSSBO[gl_InstanceID];
     if(textureIndex != 0){

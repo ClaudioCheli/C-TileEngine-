@@ -11,18 +11,22 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <vector>
+#include <string>
 
 class Animation{
 public:
+	Animation(GLuint animationLenght, std::vector<GLuint> frames, std::string name);
 	Animation(GLuint animationLength, std::vector<GLuint> frameTextureId);
-	virtual ~Animation(){};
+	 ~Animation(){};
 
-	virtual void update()=0;
+	void update();
 
-	GLuint getTextureId(GLuint frameNumber){return frameTextureId[frameNumber];}
+	GLuint getCurrentId(){return 0;}
+	std::string getName(){return name;}
 protected:
 	GLuint animationLength;
-	GLuint* frameTextureId; //TextureId for every animation's frame
+	std::vector<GLuint> ids;
+	std::string name;
 
 };
 

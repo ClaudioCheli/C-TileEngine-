@@ -7,15 +7,19 @@
 
 #include "DisplayManager.h"
 #include "tilemap/TileMap.h"
-//#include "Model.h"
 #include "Renderer.h"
 #include "Timer.h"
 #include "SDLTexture.h"
 #include "Camera.h"
 #include <iterator>
+#include <string>
+
+#include "Entity.h"
 #include "shaders/TileMapShader.h"
 #include "shaders/PlayerShader.h"
-#include "Renderable.h"
+#include "builder/EntityCreationDirector.h"
+#include "builder/PlayerBuilder.h"
+#include "builder/TileMapBuilder.h"
 
 int main(int argc, char *argv[]){
     #ifdef DEBUG
@@ -24,23 +28,51 @@ int main(int argc, char *argv[]){
 
 	DisplayManager* display = new DisplayManager();
 	display->Init();
-	display->CreateDisplay("Test OpenGL");
+	display->CreateDisplay("Test OpenGL | fps: ");
 
 	Input* input = new Input(display);
 
-	Shader* tileMapShader = new TileMapShader();
-	Shader* playerShader  = new PlayerShader();
-	std::vector<Shader*> shaders({tileMapShader, playerShader});
+	std::cout << "------------------------Input created------------------------" << std::endl;
 
-	TileMap* map   = new TileMap(tileMapShader);
+	std::vector<Renderable*> renderables;
 
-	Player* player = new Player("Debug/Entities/Player.png", "Debug/Entities/Player.xml", playerShader);
+	std::cout << "------------------------Start player creation------------------------" << std::endl;
 
-	std::vector<Renderable*> entities;
-	entities.push_back(map);
+	EntityCreationDirector director;
+	PlayerBuilder* playerBuilder = new PlayerBuilder;
+	director.setEntityBuilder(playerBuilder);
+	director.createEntity();
+	renderables.push_back(director.getEntity());
+
+	std::cout << "------------------------Player created------------------------" << std::endl;
+
+	std::cout << "------------------------Start tileMap creation------------------------" << std::endl;
+
+	TileMapBuilder TileMapBuilder;
+	TileMapBuilder.createEntity();
+	TileMapBuilder.createTileset();
+	TileMapBuilder.createTileLevels();
+	TileMapBuilder.createShader();
+	TileMapBuilder.bindBuffers();
+	renderables.push_back(TileMapBuilder.getTileMap());
+
+	std::cout << "------------------------TileMap created------------------------" << std::endl;
+
+	//Shader* tileMapShader = new TileMapShader();
+	//PlayerShader* playerShader  = new PlayerShader();
+	//std::vector<Shader*> shaders({tileMapShader, playerShader});
+
+	//TileMap* map   = new TileMap(tileMapShader);
+
+	//Player* player = new Player("Debug/Entities/Player.png", "Debug/Entities/Player.xml", playerShader);
+
+	//std::vector<Entity*> entities;
+	//entities.push_back(map);
 	//entities.push_back(player);
 
 	Renderer* GLRenderer = new Renderer();
+
+	std::cout << "------------------------Renderer created------------------------" << std::endl;
 
 	SDL_StartTextInput();
 
@@ -54,10 +86,9 @@ int main(int argc, char *argv[]){
 	int secondTime = 0;
 	int deltaT = 0;
 
-	Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f));// position, up, front
+	//Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f));// position, up, front
 
-	GLRenderer->bindProjectionMatrix(tileMapShader);
-	GLRenderer->bindProjectionMatrix(playerShader);
+	std::cout << "------------------------Start game loop------------------------" << std::endl;
 
 	while(!display->isCloseRequest()){
 		input->update();
@@ -65,19 +96,20 @@ int main(int argc, char *argv[]){
 		fps = countedFrames/(timer.getTicks()/1000.0f);
 		if(fps > 2000000)
 			fps = 0;
-		//std::cout << "fps: " << fps << std::endl;
 
+		//std::cout << "fps: " << fps << std::endl;
+		display->setWindowTitle("Test OpenGL | fps: " + std::to_string(fps));
 		secondTime = timer.getTime();
 		deltaT = secondTime - firstTime;
 		firstTime = secondTime;
 
-		camera.update(deltaT, input);
+		//camera.update(deltaT, input);
 		//std::cout << "deltaT: " << deltaT << std::endl;
 		//std::cout << "cameraPosition: " << camera.position.x << ", " << camera.position.y << ", " << camera.position.z << std::endl;
 
-		camera.bindViewMatrix(shaders);
+		//camera.bindViewMatrix(shaders);
 
-		GLRenderer->render(entities);
+		GLRenderer->render(renderables);
 
 		SDL_GL_SwapWindow(display->getWindow());
 		++countedFrames;

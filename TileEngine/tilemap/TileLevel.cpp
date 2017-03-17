@@ -7,6 +7,10 @@
 
 #include "TileLevel.h"
 
+TileLevel::TileLevel(){
+
+}
+
 TileLevel::TileLevel(const GLchar* layerData, Tileset* tileset, GLuint width, GLuint height){
 	this->tileset = tileset;
 	this->levelWidth = width;

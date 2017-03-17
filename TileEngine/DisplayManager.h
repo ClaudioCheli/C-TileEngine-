@@ -25,6 +25,7 @@ public:
 	void pause(){SDL_Delay(500);}
 	void setCloseRequest(bool req){this->closeRequest = req;}
 	bool isCloseRequest(){return closeRequest;}
+	void setWindowTitle(std::string title);
 	SDL_Window* getWindow(){return window;}
 
 private:

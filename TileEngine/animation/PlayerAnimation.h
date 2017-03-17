@@ -10,15 +10,17 @@
 
 #include "Animation.h"
 
-class PlayerAnimation: public Animation{
+class PlayerAnimation{
 public:
-	PlayerAnimation(GLuint animationLength, std::vector<GLuint> frameTextureId);
+	PlayerAnimation(GLuint animationLength, std::vector<GLuint> frameTextureId, std::string name);
 	~PlayerAnimation(){};
 
 	void update();
 
 private:
-
+	GLuint animationLength;
+	std::vector<GLuint> frameTextureId;
+	std::string name;
 
 };
 

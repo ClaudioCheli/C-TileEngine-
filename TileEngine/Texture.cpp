@@ -7,10 +7,12 @@
 
 #include "Texture.h"
 
-Texture::Texture(){
+Texture::Texture(std::string imagePath){
 	dimension = glm::vec2(0,0);
 	textureID = 0;
 	image 	  = NULL;
+
+	loadTexture(imagePath);
 }
 
 void Texture::loadTexture(std::string imagePath){

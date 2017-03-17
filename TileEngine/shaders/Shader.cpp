@@ -18,14 +18,14 @@ std::string Shader::loadShader(std::string shaderPath){
 		shaderStream << shaderFile.rdbuf();
 		shaderFile.close();
 		shaderSource = shaderStream.str();
-	}catch(std::ifstream::failure e){
+	}catch(std::ifstream::failure &e){
 		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
 	}
 
 	return shaderSource;
 }
 
-int Shader::compileShader(GLuint shaderTipe, std::string shaderSource){
+GLuint Shader::compileShader(GLuint shaderTipe, std::string shaderSource){
 	GLuint shaderID = glCreateShader(shaderTipe);
 	GLint success;
 	GLchar infoLog[512];
@@ -56,27 +56,27 @@ int Shader::compileShader(GLuint shaderTipe, std::string shaderSource){
 	    	std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
 			break;
 	    }
+	    exit(1);
 	};
 	return shaderID;
 }
 
-void Shader::linkToProgram(int vertexShaderID, int fragmentShaderID){
+GLuint Shader::linkToProgram(int vertexShaderID, int fragmentShaderID){
 	GLint success;
 	GLchar infoLog[512];
-	this->programID = glCreateProgram();
-	glAttachShader(this->programID, vertexShaderID);
-	glAttachShader(this->programID, fragmentShaderID);
-	glLinkProgram(this->programID);
-	glGetProgramiv(this->programID, GL_LINK_STATUS, &success);
+	GLuint programID = glCreateProgram();
+	glAttachShader(programID, vertexShaderID);
+	glAttachShader(programID, fragmentShaderID);
+	glLinkProgram(programID);
+	glGetProgramiv(programID, GL_LINK_STATUS, &success);
 	if(!success)
 	{
-	    glGetProgramInfoLog(this->programID, 512, NULL, infoLog);
+	    glGetProgramInfoLog(programID, 512, NULL, infoLog);
 	    std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+	    exit(2);
 	}
+	return programID;
 }
 
-void Shader::loadProjectionMatrix(glm::mat4 projectionMatrix){
-
-}
 
 
