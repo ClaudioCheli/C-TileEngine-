@@ -9,40 +9,11 @@
 
 Tile::Tile(glm::vec2 dimension) {
 	this->dimension = dimension;
-	position = glm::vec3(0,0,0);
-	rotationAngle = 0;
-	rotationAxis = glm::vec3(0,0,1);
-	scale = glm::vec3(1,1,1);
-	modelMatrix = glm::mat4();
-	setPosition(position);
-	setRotation(rotationAxis, rotationAngle);
-	setScale(scale);
-
-	std::cout << "tile vertex:" << std::endl;
-	int j=0;
-	for(GLuint i=0; i<VERTEX_ARRAY_SIZE; i++){
-		std::cout <<  vertex[i] << ", ";
-		j++;
-		if(j==3){
-			std::cout << std::endl;
-			j=0;
-		}
-	}
-
 	for(GLuint i=0; i<vertexCount*3; i+=3){
 		vertex[i]   *= dimension.x;
 		vertex[i+1] *= dimension.y;
 	}
 
-	j=0;
-	for(GLuint i=0; i<VERTEX_ARRAY_SIZE; i++){
-		std::cout <<  vertex[i] << ", ";
-		j++;
-		if(j==3){
-			std::cout << std::endl;
-			j=0;
-		}
-	}
 }
 
 std::vector<float> Tile::getVertexArray(){
@@ -57,7 +28,7 @@ std::vector<float> Tile::getVertexArray(){
 		vertexArray[count] = texture[tex]; tex++; count++;
 		vertexArray[count] = texture[tex]; tex++; count++;
 	}
-	std::cout << "vertexArray" << std::endl;
+	/*std::cout << "vertexArray" << std::endl;
 	GLuint j=0;
 	for(GLuint i=0; i<vertexArray.size(); i++){
 		std::cout << vertexArray[i] << ", ";
@@ -66,7 +37,7 @@ std::vector<float> Tile::getVertexArray(){
 			std::cout << std::endl;
 			j=0;
 		}
-	}
+	}*/
 
 	return vertexArray;
 }
@@ -78,14 +49,14 @@ std::vector<int> Tile::getIndexArray(){
 	return indexArray;
 }
 
-void Tile::setRotation(const glm::vec3 &rotationAxis, float rotationAngle){
-	glm::rotate(modelMatrix, rotationAngle, rotationAxis);
+void Tile::setRotation(glm::vec3 rotationAxis, float rotationAngle){
+	modelMatrix = glm::rotate(modelMatrix, rotationAngle, rotationAxis);
 }
 
-void Tile::setPosition(const glm::vec3 &position){
-	glm::translate(modelMatrix, position);
+void Tile::setPosition(glm::vec3 position){
+	modelMatrix = glm::translate(modelMatrix, position);
 }
 
-void Tile::setScale(const glm::vec3& scale){
-	glm::scale(modelMatrix, scale);
+void Tile::setScale(glm::vec3 scale){
+	modelMatrix = glm::scale(modelMatrix, scale);
 }

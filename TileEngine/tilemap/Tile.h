@@ -25,12 +25,13 @@ public:
 
 	std::vector<float> getVertexArray();
 	std::vector<int> getIndexArray();
-	glm::vec2& getDimension() {return dimension;}
-	glm::mat4& getModelMatrix() {return modelMatrix;}
-	glm::vec3& getPosition() {return position;}
-	void setPosition(const glm::vec3& position);
-	void setRotation(const glm::vec3& rotationAxis, float rotationAngle);
-	void setScale(const glm::vec3& scale);
+	GLuint getIndexCount(){return indexCount;}
+	glm::vec2 getDimension() {return dimension;}
+	glm::mat4 getModelMatrix() {return modelMatrix;}
+	glm::vec3 getPosition() {return position;}
+	void setPosition(glm::vec3 position);
+	void setRotation(glm::vec3 rotationAxis, float rotationAngle);
+	void setScale(glm::vec3 scale);
 
 
 private:

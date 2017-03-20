@@ -32,11 +32,11 @@ int main(int argc, char *argv[]){
 
 	Input* input = new Input(display);
 
-	std::cout << "------------------------Input created------------------------" << std::endl;
+	std::cout << "----------------------------Input created-----------------------------" << std::endl;
 
 	std::vector<Renderable*> renderables;
 
-	std::cout << "------------------------Start player creation------------------------" << std::endl;
+	std::cout << "------------------------Start player creation-------------------------" << std::endl;
 
 	EntityCreationDirector director;
 	PlayerBuilder* playerBuilder = new PlayerBuilder;
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]){
 	director.createEntity();
 	renderables.push_back(director.getEntity());
 
-	std::cout << "------------------------Player created------------------------" << std::endl;
+	std::cout << "-----------------------------Player created---------------------------" << std::endl;
 
 	std::cout << "------------------------Start tileMap creation------------------------" << std::endl;
 
@@ -56,23 +56,12 @@ int main(int argc, char *argv[]){
 	TileMapBuilder.bindBuffers();
 	renderables.push_back(TileMapBuilder.getTileMap());
 
-	std::cout << "------------------------TileMap created------------------------" << std::endl;
+	std::cout << "-----------------------------TileMap created--------------------------" << std::endl;
 
-	//Shader* tileMapShader = new TileMapShader();
-	//PlayerShader* playerShader  = new PlayerShader();
-	//std::vector<Shader*> shaders({tileMapShader, playerShader});
-
-	//TileMap* map   = new TileMap(tileMapShader);
-
-	//Player* player = new Player("Debug/Entities/Player.png", "Debug/Entities/Player.xml", playerShader);
-
-	//std::vector<Entity*> entities;
-	//entities.push_back(map);
-	//entities.push_back(player);
 
 	Renderer* GLRenderer = new Renderer();
 
-	std::cout << "------------------------Renderer created------------------------" << std::endl;
+	std::cout << "--------------------------Renderer created---------------------------" << std::endl;
 
 	SDL_StartTextInput();
 
@@ -88,7 +77,7 @@ int main(int argc, char *argv[]){
 
 	//Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f));// position, up, front
 
-	std::cout << "------------------------Start game loop------------------------" << std::endl;
+	std::cout << "----------------------------Start game loop-------------------------" << std::endl;
 
 	while(!display->isCloseRequest()){
 		input->update();

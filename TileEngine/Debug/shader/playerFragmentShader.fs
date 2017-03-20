@@ -6,12 +6,11 @@ uniform sampler2D myTexture;
 out vec4 color;
 
 void main(){
-	//vec4 textureColor = texture(myTexture, texCoordinate);
-	//if( textureColor.a < 0.5){
-	//	discard;
-	//}
+	vec4 textureColor = texture(myTexture, texCoordinate);
+	if( textureColor.a < 0.5){
+		discard;
+	}
 	
-    //color = textureColor;
-    color = vec4(1.0, 0.0, 0.0, 1.0);
+    color = textureColor;
 
 } 

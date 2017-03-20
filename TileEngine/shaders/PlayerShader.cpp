@@ -33,6 +33,15 @@ void PlayerShader::getAllUniformLocation(){
 	location_tilesetNumberOfColumns = getUniformLocation("tilesetNumberOfColumns");
 }
 
+void PlayerShader::printUniformLocation(){
+	std::cout << "location_modelMatrix: " << location_modelMatrix << std::endl;
+	std::cout << "location_viewMatrix: " << location_viewMatrix << std::endl;
+	std::cout << "location_projectionMatrix: " << location_projectionMatrix << std::endl;
+	std::cout << "location_textureIndex: " << location_textureIndex << std::endl;
+	std::cout << "location_tilesetNumberOfRows: " << location_tilesetNumberOfRows << std::endl;
+	std::cout << "location_tilesetNumberOfColumns: " << location_tilesetNumberOfColumns << std::endl;
+}
+
 void PlayerShader::bindAttributes(){
 	bindAttribute(0, "vertexPosition");
 	bindAttribute(1, "texCoord");

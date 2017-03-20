@@ -16,15 +16,6 @@ Player::Player(){
 
 }
 
-std::vector<GLuint> Player::readAnimation(XMLElement* animation, int animationLength){
-	std::vector<GLuint> frameTextureId(animationLength);
-	XMLElement* frame = animation->FirstChildElement("Frame");
-	while(frame != NULL){
-		frameTextureId.push_back(frame->IntAttribute("subTextureId"));
-		frame = frame->NextSiblingElement("Frame");
-	}
-	return frameTextureId;
-}
 
 void Player::render(){
 	shader->start();
@@ -32,7 +23,7 @@ void Player::render(){
 	bindAttribute();
 	bindTexture();
 	bindUniform();
-	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, tile->getIndexCount(), GL_UNSIGNED_INT, 0);
 	unbindAttribute();
 
 	shader->stop();
@@ -88,6 +79,10 @@ void Player::bindBuffers(){
 	float playerVertex[vertexArray.size()];
 	for(GLuint i=0; i<vertexArray.size(); i++)
 		playerVertex[i] = vertexArray[i];
+	std::cout << "Player Vertex: " << std::endl;
+	for(int i=0; i<vertexArray.size(); i++){
+		std::cout << playerVertex[i] << ", ";
+	}
 
 	std::cout << std::endl;
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -99,6 +94,12 @@ void Player::bindBuffers(){
 	int playerIndex[indexArray.size()];
 	for(GLuint i=0; i<indexArray.size(); i++)
 		playerIndex[i] = indexArray[i];
+	std::cout << "Player index: " << std::endl;
+	for(int i=0; i<indexArray.size(); i++){
+		std::cout << playerIndex[i] << ", ";
+	}
+
+	std::cout << std::endl;
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(playerIndex), playerIndex, GL_STATIC_DRAW);
 	glCheckError();
@@ -115,12 +116,6 @@ void Player::bindBuffers(){
 
 	glBindVertexArray(0);
 }
-
-/*void Player::createModelMatrix(){
-	modelMatrix = glm::translate(position)
-				* glm::rotate(0.0f, glm::vec3(0.0f, 1.0f, 0.0f))
-				* glm::scale(glm::vec3(1.0f, 1.0f, 1.0f));
-}*/
 
 void Player::setAnimation(Animation* animation){
 	if(animation->getName().compare("walk_up"))

@@ -19,18 +19,6 @@
 
 using namespace tinyxml2;
 
-/*static const GLfloat playerVertex[] = {
-		// Positions
-		128.0f,  0.0f, 0.0f, 1.0f, 0.0f, // Top Right
-		128.0f, 64.0f, 0.0f, 1.0f, 1.0f, // Bottom Right
-		0.0f, 64.0f, 0.0f, 0.0f, 1.0f, // Bottom Left
-		0.0f,  0.0f, 0.0f, 0.0f, 0.0f  // Top Left
-};
-static const GLuint playerIndex[] = {  // Note that we start from 0!
-		0, 1, 3, // First Triangle
-		1, 2, 3  // Second Triangle
-};*/
-
 class Player: public Entity{
 public:
 	Player();
@@ -78,7 +66,6 @@ private:
 	void bindAttribute();
 	void createModelMatrix();
 	void unbindAttribute();
-	std::vector<GLuint> readAnimation(XMLElement* animation, int animationLength);
 
 
 };

@@ -12,7 +12,7 @@ uniform int tilesetNumberOfRows;
 uniform int tilesetNumberOfColumns;
 
 void main(){	
- 	gl_Position = projection * model * vec4(vertexPosition.x, vertexPosition.y, vertexPosition.z+10.0f, 1.0);
+ 	gl_Position = projection * model * vec4(vertexPosition.x, vertexPosition.y, vertexPosition.z-10.0f, 1.0);
     
     float column  	 = mod(textureIndex-1, tilesetNumberOfColumns);
     float row     	 = (textureIndex-1) / tilesetNumberOfRows;

@@ -32,6 +32,7 @@ private:
 	int location_tilesetNumberOfRows;
 	int location_tilesetNumberOfColumns;
 
+	void printUniformLocation();
 	void getAllUniformLocation();
 	void bindAttributes();
 

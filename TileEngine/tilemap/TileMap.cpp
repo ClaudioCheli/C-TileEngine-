@@ -129,6 +129,7 @@ void TileMap::bindBuffers(){
 			tileIDs[i] = tileID.at(i);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo[i]);
 		glBufferData(GL_SHADER_STORAGE_BUFFER, tileID.size(), tileIDs, GL_STATIC_DRAW);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbo[i]);
 	}
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
