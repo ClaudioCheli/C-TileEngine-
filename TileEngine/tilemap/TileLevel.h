@@ -19,7 +19,7 @@
 class TileLevel{
 public:
 	TileLevel();
-	TileLevel(const GLchar* layerData, Tileset* tileset, GLuint width, GLuint height);
+	TileLevel(const GLchar* layerData, Tileset* tileset, GLuint width, GLuint height, std::string levelName);
 	~TileLevel(){}
 
 	void bindSSBO(GLuint VAO);
@@ -31,12 +31,14 @@ public:
 	GLuint getLevelDepth(){return levelDepth;}
 	Tileset* getTileset(){return tileset;}
 	std::vector< GLuint > getTileIDs(){return tileIDs;}
+	std::string getLevelName(){return levelName;}
 
 private:
 	Tileset* tileset;
 	GLuint levelWidth, levelHeight, levelDepth, tileCount, ssbo;
 	std::vector< GLuint > tileIDs;
 	std::vector< glm::vec3 > tilePositions;
+	std::string levelName;
 
 	std::vector<GLuint> getIntData(std::string layer);
 	std::vector<glm::vec3> calculateTilesPosition();

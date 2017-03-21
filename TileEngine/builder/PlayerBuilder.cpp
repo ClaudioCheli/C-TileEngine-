@@ -33,7 +33,7 @@ void PlayerBuilder::createTile(){
 	tileset->QueryIntAttribute("tileHeight", &tileHeight);
 
 	Tile* tile = new Tile(glm::vec2(tileWidth, tileHeight));
-	tile->setPosition(glm::vec3(0,0,0));
+	tile->setPosition(glm::vec3(0,0,-10));
 	tile->setRotation(glm::vec3(0,0,1), 0);
 	tile->setScale(glm::vec3(1,1,1));
 	entity->setTile(tile);

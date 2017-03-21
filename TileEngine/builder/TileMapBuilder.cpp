@@ -63,20 +63,18 @@ void TileMapBuilder::createTileLevels(){
 	const GLchar* layerData; // Contiene i dati di un livello
 	int width;
 	int height;
-	std::string tilesetName;
-	layer->QueryIntAttribute("width", &width);
-	layer->QueryIntAttribute("height", &height);
-	std::vector<std::string> layers; // Contiene i dati di tutti i livelli, uno per posizione
+	int z;
+	std::string levelName;
 	while(layer != nullptr){
-		// Legge i dati del livello corrente
+		layer->QueryIntAttribute("width", &width);
+		layer->QueryIntAttribute("height", &height);
+		layer->QueryIntAttribute("z", &z);
+		levelName = layer->Attribute("name");
+		std::cout << "level " << levelName << ", level width: " << width << ", level height: " << height << ", z: " << z << std::endl;
 		layerData = data->GetText();
-		layers.push_back(layerData);
-		// Crea un nuovo livello
 		Tileset* tileset = tileMap->getTileset(property->Attribute("value"));
-		//std::cout << "tileDimension: " << tileset->getTileDimensions().x << ", " << tileset->getTileDimensions().x << std::endl;
-		TileLevel* tilelevel = new TileLevel(layerData, tileset, width, height);
+		TileLevel* tilelevel = new TileLevel(layerData, tileset, width, height, levelName);
 		levels.push_back( tilelevel );
-		// Incrementa il ivello
 		layer = layer->NextSiblingElement("layer");
 		if(layer != nullptr){
 			data = layer->FirstChildElement("data");
@@ -84,6 +82,7 @@ void TileMapBuilder::createTileLevels(){
 
 		}
 	}
+
 	tileMap->setTileLevels(levels);
 }
 

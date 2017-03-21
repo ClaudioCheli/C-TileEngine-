@@ -37,7 +37,7 @@ protected:
 	GLuint programID;
 
 	int getUniformLocation(std::string uniformName){return glGetUniformLocation(programID, uniformName.c_str());}
-	void bindAttribute(int attrib, std::string variableName){glBindAttribLocation(programID, attrib, variableName.c_str());}
+	void bindAttribute(int attrib, std::string variableName){		glBindAttribLocation(programID, attrib, variableName.c_str());}
 	void loadInt(int location, int value){glUniform1i(location, value);}
 	void loadFloat(int location, float value){glUniform1f(location, value);}
 	void loadVector2f(int location, glm::vec2 vec){glUniform2f(location, vec.x, vec.y);}

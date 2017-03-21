@@ -62,13 +62,15 @@ private:
 	std::vector<GLuint> ssbo;
 	GLuint indexCount = 6;
 	GLuint vertexCount = 4;
-	//glm::vec2 mapDimension;
-	//GLuint tileCount;
 	std::vector< Tileset* > tilesets;
 	std::vector< TileLevel* > levels;
 
 	std::vector< std::vector<GLint> > getIntData(std::vector<std::string>);
 	Tileset* findTileset(std::string name);
+	void bindVertexBuffer();
+	void bindIndexBuffer();
+	void bindPositionBuffer();
+	void bindSSBO();
 
 };
 

@@ -16,16 +16,17 @@ TileMap::TileMap(){
 
 }
 
-
 void TileMap::render(){
 	shader->start();
 
 	bindAttribute();
-	for(int level=0; level<levels.size(); level++){
+	for(GLuint level=0; level<levels.size(); level++){
 		bindTexture(level);
 		bindUniform(level);
 		bindLevelSSBO(level);
-		glDrawElementsInstanced(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, tileIndex,levels.at(level)->getLevelDimensions().x*levels.at(level)->getLevelDimensions().y*4);
+		glDrawElementsInstanced(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0,
+				levels.at(level)->getLevelDimensions().x*levels.at(level)->getLevelDimensions().y);
+		glCheckError();
 	}
 	unbindAttribute();
 
@@ -61,6 +62,9 @@ void TileMap::bindLevelSSBO(GLuint level){
 
 void TileMap::bindAttribute(){
 	glBindVertexArray(VAO);
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 }
 
@@ -70,12 +74,16 @@ void TileMap::bindTexture(GLuint level){
 }
 
 void TileMap::bindUniform(GLuint level){
-	shader->loadTilesetNumberOfColumns(levels.at(level)->getTileset()->getNumberOfRows());
+	shader->loadTilesetNumberOfColumns(levels.at(level)->getTileset()->getNumberOfColumns());
 	shader->loadTilesetNumberOfRows(levels.at(level)->getTileset()->getNumberOfRows());
+	shader->loadLevelNumber(level);
 }
 
 void TileMap::unbindAttribute(){
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
 	glBindVertexArray(0);
 }
 
@@ -92,22 +100,40 @@ void TileMap::bindBuffers(){
 	}
 
 	glBindVertexArray(VAO);
+	bindVertexBuffer();
+	bindIndexBuffer();
+	bindPositionBuffer();
+	bindSSBO();
 
-	//Bind vertexBuffer
+	glBindVertexArray(0);
+
+}
+
+void TileMap::bindVertexBuffer(){
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(tileVertex), tileVertex, GL_STATIC_DRAW);
+	glCheckError();
 
 	//vertexPosition
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
+	glCheckError();
 
 	//texture
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (GLvoid*)(3*sizeof(GLfloat)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (GLvoid*)(3*sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
+	glCheckError();
+}
 
-	//Bind positionBuffer
+void TileMap::bindIndexBuffer(){
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(tileIndex), tileIndex, GL_STATIC_DRAW);
+	glCheckError();
+}
+
+void TileMap::bindPositionBuffer(){
 	std::vector<glm::vec3> tilePosition = levels.at(0)->getTilePositions();
-	float positions[tilePosition.size()*3];
+	GLfloat positions[tilePosition.size()*3];
 	GLuint j=0;
 	for(GLuint i=0; i<tilePosition.size(); i++){
 		positions[j] = tilePosition.at(i).x; j++;
@@ -116,31 +142,34 @@ void TileMap::bindBuffers(){
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, positionVBO);
-	glBufferData(GL_ARRAY_BUFFER, levels.at(0)->getTileCount()*3, positions, GL_STATIC_DRAW);
-	glVertexAttribPointer(2, 3, GL_FLOAT, false, 3*sizeof(GLfloat), 0);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), (GLvoid*)0);
 	glVertexAttribDivisor(2, 1);
 	glEnableVertexAttribArray(2);
-
-	//Bind ssbo
-	for(GLuint i=0; i<ssbo.size(); i++){
-		std::vector<GLuint> tileID = levels.at(i)->getTileIDs();
-		GLuint tileIDs[tileID.size()];
-		for(GLuint i=0; i<tileID.size(); i++)
-			tileIDs[i] = tileID.at(i);
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo[i]);
-		glBufferData(GL_SHADER_STORAGE_BUFFER, tileID.size(), tileIDs, GL_STATIC_DRAW);
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssbo[i]);
-	}
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-
-	glBindVertexArray(0);
-
-	//Bind indexBuffer
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(tileIndex), tileIndex, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glCheckError();
 
 }
+
+void TileMap::bindSSBO(){
+	for(GLuint i=0; i<ssbo.size(); i++){
+		GLuint k=0;
+		std::vector<GLuint> tileID = levels.at(i)->getTileIDs();
+		GLuint tileIDs[tileID.size()];
+		for(GLuint j=0; j<tileID.size(); j++)
+			tileIDs[j] = tileID.at(j);
+		for(GLuint j=0; j<tileID.size(); j++){
+			std::cout << tileIDs[j] << ", ";
+			k++;
+			if(k==20){
+				std::cout << std::endl;
+				k=0;
+			}
+		}
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo[i]);
+		glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(tileIDs), tileIDs, GL_STATIC_DRAW);
+	}
+}
+
 
 
 

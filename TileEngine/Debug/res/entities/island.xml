@@ -9,7 +9,7 @@
 		imagePath="res/tilesets/objects_img.png" firstgid="257" />
 	-->
 	
-	<layer name="sea" width="20" height="12">
+	<layer name="sea" width="20" height="12" z="10">
 		<properties>
 			<property name="tileset" value="terrain" />
 		</properties>
@@ -28,7 +28,7 @@
 			16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16
 		</data>
 	</layer>
-	<layer name="terrain" width="20" height="12">
+	<layer name="terrain" width="20" height="12" z="0">
 		<properties>
 			<property name="tileset" value="terrain" />
 		</properties>

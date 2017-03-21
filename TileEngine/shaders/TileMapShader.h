@@ -19,6 +19,7 @@ public:
 	void loadTilesetNumberOfColumns(int tilesetNumberOfColumns);
 	void loadProjectionMatrix(glm::mat4 matrix);
 	void loadViewMatrix(glm::mat4 matrix);
+	void loadLevelNumber(int level);
 
 private:
 	std::string VERTEX_SHADER_PATH = "shader/tileMapVertexShader.vs";
@@ -27,7 +28,9 @@ private:
 	int location_projectionMatrix;
 	int location_tilesetNumberOfRows;
 	int location_tilesetNumberOfColumns;
+	int location_levelNumber;
 
+	void printUniformLocation();
 	void getAllUniformLocation();
 	void bindAttributes();
 

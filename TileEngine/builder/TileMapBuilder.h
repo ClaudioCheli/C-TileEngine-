@@ -9,6 +9,7 @@
 #define BUILDER_TILEMAPBUILDER_H_
 
 #include <string>
+#include <algorithm>
 
 #include "../Error.h"
 #include "../tilemap/TileMap.h"

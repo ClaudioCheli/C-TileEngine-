@@ -28,6 +28,14 @@ void TileMapShader::getAllUniformLocation(){
 	location_projectionMatrix 		= getUniformLocation("projection");
 	location_tilesetNumberOfRows 	= getUniformLocation("tilesetNumberOfRows");
 	location_tilesetNumberOfColumns = getUniformLocation("tilesetNumberOfColumns");
+	location_levelNumber 			= getUniformLocation("levelNumber");
+}
+
+void TileMapShader::printUniformLocation(){
+	std::cout << "location_viewMatrix: " << location_viewMatrix << std::endl;
+	std::cout << "location_projectionMatrix: " << location_projectionMatrix << std::endl;
+	std::cout << "location_tilesetNumberOfRows: " << location_tilesetNumberOfRows << std::endl;
+	std::cout << "location_tilesetNumberOfColumns: " << location_tilesetNumberOfColumns << std::endl;
 }
 
 void TileMapShader::bindAttributes(){
@@ -54,5 +62,10 @@ void TileMapShader::loadProjectionMatrix(glm::mat4 matrix){
  void TileMapShader::loadViewMatrix(glm::mat4 matrix){
 	loadMatrix(location_viewMatrix, matrix);
 }
+
+ void TileMapShader::loadLevelNumber(int level){
+	 loadInt(location_levelNumber, level);
+ }
+
 
 

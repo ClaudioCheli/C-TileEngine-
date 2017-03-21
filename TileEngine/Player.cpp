@@ -16,7 +16,6 @@ Player::Player(){
 
 }
 
-
 void Player::render(){
 	shader->start();
 
@@ -79,10 +78,10 @@ void Player::bindBuffers(){
 	float playerVertex[vertexArray.size()];
 	for(GLuint i=0; i<vertexArray.size(); i++)
 		playerVertex[i] = vertexArray[i];
-	std::cout << "Player Vertex: " << std::endl;
+	/*std::cout << "Player Vertex: " << std::endl;
 	for(int i=0; i<vertexArray.size(); i++){
 		std::cout << playerVertex[i] << ", ";
-	}
+	}*/
 
 	std::cout << std::endl;
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -94,10 +93,10 @@ void Player::bindBuffers(){
 	int playerIndex[indexArray.size()];
 	for(GLuint i=0; i<indexArray.size(); i++)
 		playerIndex[i] = indexArray[i];
-	std::cout << "Player index: " << std::endl;
+	/*std::cout << "Player index: " << std::endl;
 	for(int i=0; i<indexArray.size(); i++){
 		std::cout << playerIndex[i] << ", ";
-	}
+	}*/
 
 	std::cout << std::endl;
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
