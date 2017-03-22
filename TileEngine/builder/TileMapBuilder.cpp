@@ -83,6 +83,8 @@ void TileMapBuilder::createTileLevels(){
 		}
 	}
 
+	std::reverse(levels.begin(), levels.end());
+
 	tileMap->setTileLevels(levels);
 }
 

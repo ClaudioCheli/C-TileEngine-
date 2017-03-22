@@ -5,15 +5,15 @@
  *      Author: clasb
  */
 
+#include <iterator>
+#include <string>
+
 #include "DisplayManager.h"
 #include "tilemap/TileMap.h"
 #include "Renderer.h"
 #include "Timer.h"
 #include "SDLTexture.h"
 #include "Camera.h"
-#include <iterator>
-#include <string>
-
 #include "Entity.h"
 #include "shaders/TileMapShader.h"
 #include "shaders/PlayerShader.h"
@@ -57,7 +57,6 @@ int main(int argc, char *argv[]){
 	renderables.push_back(TileMapBuilder.getTileMap());
 
 	std::cout << "-----------------------------TileMap created--------------------------" << std::endl;
-
 
 	Renderer* GLRenderer = new Renderer();
 

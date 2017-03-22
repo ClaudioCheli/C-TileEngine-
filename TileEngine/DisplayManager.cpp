@@ -24,6 +24,8 @@ void DisplayManager::CreateDisplay(std::string title){
 
 	glewExperimental = GL_TRUE;
 	glewInit();
+
+	glEnable(GL_DEPTH_TEST);
 }
 
 void DisplayManager::setWindowTitle(std::string title){

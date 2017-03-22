@@ -17,7 +17,6 @@ void Renderer::render(std::vector<Renderable*> entities){
 		entities[i]->update();
 		entities[i]->bindProjectionMatrix(projection);
 		entities[i]->render();
-		glClear(GL_DEPTH_BUFFER_BIT);
 	}
 }
 

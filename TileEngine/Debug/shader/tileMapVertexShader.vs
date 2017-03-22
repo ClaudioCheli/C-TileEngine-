@@ -18,7 +18,7 @@ uniform int levelNumber;
 
 void main(){	
 	int levelDepth = -(10*levelNumber) - 80;
- 	gl_Position = projection * vec4(vertexPosition.x/2 + tilePosition.x, vertexPosition.y/2 + tilePosition.y, vertexPosition.z + levelDepth, 1.0);
+ 	gl_Position = projection * vec4(vertexPosition.x + tilePosition.x, vertexPosition.y + tilePosition.y, vertexPosition.z + levelDepth, 1.0);
     
     int textureIndex = textureIdSSBO[gl_InstanceID];
     if(textureIndex != 0){
