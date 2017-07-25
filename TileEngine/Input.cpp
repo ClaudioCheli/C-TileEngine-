@@ -9,7 +9,55 @@
 
 Input::Input(DisplayManager* display){
 	this->display = display;
+	pressed = false;
 }
+
+void Input::checkInput(){
+	while(SDL_PollEvent(&event) != 0){
+		switch (this->event.type){
+		case SDL_QUIT:
+			this->display->setCloseRequest(true); break;
+		case SDL_KEYDOWN:
+			pressed = true;  break;
+		case SDL_KEYUP:
+			pressed = false; break;
+		}
+		switch (this->event.key.keysym.sym){
+		case SDLK_w:
+			setKeyState(W, pressed);
+			keyEvents.push_back(W);
+			setChanged();
+			break;
+		case SDLK_a:
+			setKeyState(A, pressed);
+			keyEvents.push_back(A);
+			setChanged();
+			break;
+		case SDLK_s:
+			setKeyState(S, pressed);
+			keyEvents.push_back(S);
+			setChanged();
+			break;
+		case SDLK_d:
+			setKeyState(D, pressed);
+			keyEvents.push_back(D);
+			setChanged();
+			break;
+		case SDLK_ESCAPE:
+			setKeyState(ESC, pressed);
+			keyEvents.push_back(ESC);
+			setChanged();
+			break;
+		}
+	}
+	notifyObservers(keyEvents);
+	keyEvents.clear();
+}
+
+void Input::setKeyState(int key, bool state){
+	keyState[key] = state;
+}
+
 
 void Input::update(){
 	while(SDL_PollEvent(&event) != 0){

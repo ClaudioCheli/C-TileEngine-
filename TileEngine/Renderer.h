@@ -25,7 +25,6 @@ public:
 	void render(std::vector<Renderable*> entities);
 	//void render(TileMap* tileMap, Player* player);
 	void clear();
-	void bindProjectionMatrix(Shader* shader);
 private:
 	glm::mat4 projection;
 	//static void draw(Entity entity);

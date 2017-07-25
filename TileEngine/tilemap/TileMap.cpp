@@ -157,14 +157,14 @@ void TileMap::bindSSBO(){
 		GLuint tileIDs[tileID.size()];
 		for(GLuint j=0; j<tileID.size(); j++)
 			tileIDs[j] = tileID.at(j);
-		for(GLuint j=0; j<tileID.size(); j++){
+		/*for(GLuint j=0; j<tileID.size(); j++){
 			std::cout << tileIDs[j] << ", ";
 			k++;
 			if(k==20){
 				std::cout << std::endl;
 				k=0;
 			}
-		}
+		}*/
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo[i]);
 		glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(tileIDs), tileIDs, GL_STATIC_DRAW);
 	}

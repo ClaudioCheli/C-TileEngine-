@@ -43,6 +43,8 @@ int main(int argc, char *argv[]){
 	director.setEntityBuilder(playerBuilder);
 	director.createEntity();
 	renderables.push_back(director.getEntity());
+	Player* player = (Player*) director.getEntity();
+	input->attach(player);
 
 	std::cout << "-----------------------------Player created---------------------------" << std::endl;
 
@@ -79,7 +81,7 @@ int main(int argc, char *argv[]){
 	std::cout << "----------------------------Start game loop-------------------------" << std::endl;
 
 	while(!display->isCloseRequest()){
-		input->update();
+		input->checkInput();
 
 		fps = countedFrames/(timer.getTicks()/1000.0f);
 		if(fps > 2000000)

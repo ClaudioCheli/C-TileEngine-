@@ -13,11 +13,12 @@ Renderer::Renderer(){
 
 void Renderer::render(std::vector<Renderable*> entities){
 	clear();
-	for(GLuint i=0; i<entities.size(); i++){
-		entities[i]->update();
-		entities[i]->bindProjectionMatrix(projection);
-		entities[i]->render();
+	for(auto &entity : entities){
+		entity->update();
+		entity->bindProjectionMatrix(projection);
+		entity->render();
 	}
+
 }
 
 void Renderer::clear(){

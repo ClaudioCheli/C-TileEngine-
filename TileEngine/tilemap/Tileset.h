@@ -17,11 +17,7 @@
 class Tileset{
 public:
 	Tileset(){};
-	Tileset(GLuint tileWidth, GLuint tileHeight, GLuint firstTileID, GLuint columns, GLuint rows, std::string tilesetName);
 	~Tileset(){}
-
-	void bindNumberOfRows(Shader* shader);
-	void bindNumberOfColumns(Shader* shader);
 
 	glm::vec2 getTileDimensions(){return glm::vec2(tileWidth, tileHeight);}
 	std::string getName(){return tilesetName;}
@@ -40,7 +36,6 @@ public:
 	void 	setTextureWidth(int textureWidth) {this->textureWidth = textureWidth;}
 	int	 	getTileHeight() const {return tileHeight;}
 	void 	setTileHeight(int tileHeight) {this->tileHeight = tileHeight;}
-	const 	std::string& getTilesetName() const {return tilesetName;}
 	void 	setTilesetName(const std::string& tilesetName) {this->tilesetName = tilesetName;}
 	int 	getTilesNumber() const {return tilesNumber;}
 	void 	setTilesNumber(int tilesNumber) {this->tilesNumber = tilesNumber;}

@@ -49,7 +49,7 @@ void Player::unbindAttribute(){
 }
 
 void Player::update(){
-
+	tile->setPosition(glm::vec3(direction.x*SPEED, direction.y*SPEED, 0));
 }
 
 void Player::bindUniform(){
@@ -129,4 +129,59 @@ void Player::setAnimation(Animation* animation){
 			idleDown = animation;
 }
 
+void Player::updateObserver(Subject* sub, std::list<int> list){
+	Input* in = (Input*) sub;
+
+	bool bW = false, bA = false, bS = false, bD = false;
+	for(std::list<int>::iterator it = list.begin(); it != list.end(); it++){
+		switch(*it){
+		case W:
+			bW = true;
+			break;
+		case A:
+			bA = true;
+			break;
+		case S:
+			bS = true;
+			break;
+		case D:
+			bD = true;
+			break;
+		}
+	}
+
+	if(bW || bS){
+		int w = in->getKeyState(W) ? 1 : 0;
+		int s = in->getKeyState(S) ? 1 : 0;
+		direction.y = -w + s;
+		if(direction.y == 1)
+			currentAnimation = walkDown;
+		if(direction.y == -1)
+			currentAnimation = walkUp;
+		if(direction.y == 0 && direction.x == 1)
+			currentAnimation = walkRight;
+		if(direction.y == 0 && direction.x == -1)
+			currentAnimation = walkLeft;
+	}
+
+	if(bA || bD){
+		int a = in->getKeyState(A) ? 1 : 0;
+		int d = in->getKeyState(D) ? 1 : 0;
+		direction.x = -a + d;
+		if(direction.x == 1)
+			currentAnimation = walkRight;
+		if(direction.x == -1)
+			currentAnimation = walkLeft;
+		if(direction.x == 0 && direction.y == 1)
+			currentAnimation = walkDown;
+		if(direction.x == 0 && direction.y == -1)
+			currentAnimation = walkUp;
+	}
+
+	if(!in->getKeyState(W)
+			&& !in->getKeyState(A)
+			&& !in->getKeyState(S)
+			&& !in->getKeyState(D))
+		currentAnimation = idleDown;
+}
 

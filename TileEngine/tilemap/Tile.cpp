@@ -60,3 +60,4 @@ void Tile::setPosition(glm::vec3 position){
 void Tile::setScale(glm::vec3 scale){
 	modelMatrix = glm::scale(modelMatrix, scale);
 }
+

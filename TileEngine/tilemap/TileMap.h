@@ -16,9 +16,6 @@
 #include "../Texture.h"
 #include "../shaders/TileMapShader.h"
 
-
-using namespace tinyxml2;
-
 static const GLfloat tileVertex[] = {
 		// Positions
 		64.0f,  0.0f, 0.0f, 1.0f, 0.0f, // Top Right

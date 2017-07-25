@@ -16,13 +16,14 @@
 #include "Entity.h"
 #include "shaders/PlayerShader.h"
 #include "Error.h"
+#include "observer/Observer.h"
+#include "input.h"
 
 using namespace tinyxml2;
 
-class Player: public Entity{
+class Player: public Entity, public Observer{
 public:
 	Player();
-	//Player(std::string tilesetImagePath, std::string tilesetDefinitionPath, PlayerShader* shader);
 	~Player(){};
 
 	void render();
@@ -44,6 +45,8 @@ public:
 		this->currentAnimation = currentAnimation;
 	}
 
+	void updateObserver(Subject* sub, std::list<int> list);
+
 private:
 	GLuint VAO, VBO, EBO;
 	Animation* walkLeft;
@@ -62,9 +65,10 @@ private:
 	glm::mat4 modelMatrix;
 	glm::vec3 position;
 	GLuint indexCount;
+	glm::vec2 direction;
+	const float SPEED = 10;
 
 	void bindAttribute();
-	void createModelMatrix();
 	void unbindAttribute();
 
 

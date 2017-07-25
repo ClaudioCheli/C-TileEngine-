@@ -12,7 +12,7 @@ const std::string TileMapBuilder::TILEMAP_PATH = "res/entities/island.xml";
 void TileMapBuilder::createEntity(){
 	tileMap = new TileMap();
 
-	XMLDocument tileMapXMLFile;
+	XMLDocument  tileMapXMLFile;
 	GLint errorID = tileMapXMLFile.LoadFile(TILEMAP_PATH.c_str());
 	tinyxmlError(errorID);
 	XMLElement* tileset = tileMapXMLFile.FirstChildElement("object")->FirstChildElement("tileset");
@@ -70,7 +70,7 @@ void TileMapBuilder::createTileLevels(){
 		layer->QueryIntAttribute("height", &height);
 		layer->QueryIntAttribute("z", &z);
 		levelName = layer->Attribute("name");
-		std::cout << "level " << levelName << ", level width: " << width << ", level height: " << height << ", z: " << z << std::endl;
+		//std::cout << "level " << levelName << ", level width: " << width << ", level height: " << height << ", z: " << z << std::endl;
 		layerData = data->GetText();
 		Tileset* tileset = tileMap->getTileset(property->Attribute("value"));
 		TileLevel* tilelevel = new TileLevel(layerData, tileset, width, height, levelName);

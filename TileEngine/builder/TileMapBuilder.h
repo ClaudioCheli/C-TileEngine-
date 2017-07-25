@@ -15,10 +15,11 @@
 #include "../tilemap/TileMap.h"
 #include "../tilemap/Tileset.h"
 
+using namespace tinyxml2;
+
 class TileMapBuilder{
 public:
 	void createEntity();
-	void createTile();
 	void createTileset();
 	void createTileLevels();
 	void createAnimation();
