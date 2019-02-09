@@ -3,4 +3,6 @@ Debug/**
 Debug/TileEngine.exe
 
 # Except
-!Debug/res/**
+!Debug/res/entities/*
+!Debug/res/shader/*
+!Debug/res/tilesets/*
