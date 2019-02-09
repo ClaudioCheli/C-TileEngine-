@@ -1,0 +1,6 @@
+# Ignore everything
+Debug/**
+Debug/TileEngine.exe
+
+# Except
+!Debug/res/**
