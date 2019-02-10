@@ -7,6 +7,7 @@
 
 #include <iterator>
 #include <string>
+#include <memory>
 
 #include "DisplayManager.h"
 #include "tilemap/TileMap.h"
@@ -20,11 +21,24 @@
 #include "builder/EntityCreationDirector.h"
 #include "builder/PlayerBuilder.h"
 #include "builder/TileMapBuilder.h"
+#include "../lib/spdlog/sinks/basic_file_sink.h"
+#include "../lib/spdlog/sinks/stdout_color_sinks.h"
 
 int main(int argc, char *argv[]){
     #ifdef DEBUG
 	std::cout << "START" << std::endl;
 	#endif
+
+	std::shared_ptr<spdlog::logger> logger;
+	try{
+		logger =spdlog::basic_logger_mt("TELogger", "logs/TELogger.log");
+		logger->sinks().push_back(std::make_shared<spdlog::sinks::stdout_color_sink_mt>());
+	}catch (const spdlog::spdlog_ex &ex){
+		std::cout << "Log init failed: " << ex.what() << std::endl;
+	}
+
+	logger->info("Test logger");
+
 
 	DisplayManager* display = new DisplayManager();
 	display->Init();
@@ -32,11 +46,11 @@ int main(int argc, char *argv[]){
 
 	Input* input = new Input(display);
 
-	std::cout << "----------------------------Input created-----------------------------" << std::endl;
+	logger->info("Input created");
 
 	std::vector<Renderable*> renderables;
 
-	std::cout << "------------------------Start player creation-------------------------" << std::endl;
+	logger->info("Start player creation");
 
 	EntityCreationDirector director;
 	PlayerBuilder* playerBuilder = new PlayerBuilder;
@@ -46,9 +60,9 @@ int main(int argc, char *argv[]){
 	Player* player = (Player*) director.getEntity();
 	input->attach(player);
 
-	std::cout << "-----------------------------Player created---------------------------" << std::endl;
+	logger->info("Player created");
 
-	std::cout << "------------------------Start tileMap creation------------------------" << std::endl;
+	logger->info("Start tileMap creation");
 
 	TileMapBuilder TileMapBuilder;
 	TileMapBuilder.createEntity();
@@ -58,11 +72,11 @@ int main(int argc, char *argv[]){
 	TileMapBuilder.bindBuffers();
 	renderables.push_back(TileMapBuilder.getTileMap());
 
-	std::cout << "-----------------------------TileMap created--------------------------" << std::endl;
+	logger->info("TileMap created");
 
 	Renderer* GLRenderer = new Renderer();
 
-	std::cout << "--------------------------Renderer created---------------------------" << std::endl;
+	logger->info("Renderer created");
 
 	SDL_StartTextInput();
 
@@ -72,13 +86,13 @@ int main(int argc, char *argv[]){
 	int countedFrames = 0;
 	timer.start();
 	int fps;
-	int firstTime = timer.getTime();
-	int secondTime = 0;
-	int deltaT = 0;
+	//int firstTime = timer.getTime();
+	//int secondTime = 0;
+	//int deltaT = 0;
 
 	//Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f));// position, up, front
 
-	std::cout << "----------------------------Start game loop-------------------------" << std::endl;
+	logger->info("Start game loop");
 
 	while(!display->isCloseRequest()){
 		input->checkInput();
@@ -89,9 +103,9 @@ int main(int argc, char *argv[]){
 
 		//std::cout << "fps: " << fps << std::endl;
 		display->setWindowTitle("Test OpenGL | fps: " + std::to_string(fps));
-		secondTime = timer.getTime();
-		deltaT = secondTime - firstTime;
-		firstTime = secondTime;
+		//secondTime = timer.getTime();
+		//deltaT = secondTime - firstTime;
+		//firstTime = secondTime;
 
 		//camera.update(deltaT, input);
 		//std::cout << "deltaT: " << deltaT << std::endl;
