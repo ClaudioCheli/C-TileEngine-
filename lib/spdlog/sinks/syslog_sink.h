@@ -6,10 +6,10 @@
 #pragma once
 
 #ifndef SPDLOG_H
-#include "spdlog/spdlog.h"
+#include "../spdlog.h"
 #endif
 
-#include "spdlog/sinks/base_sink.h"
+#include "base_sink.h"
 
 #include <array>
 #include <string>

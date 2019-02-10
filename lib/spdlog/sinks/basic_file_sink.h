@@ -11,7 +11,7 @@
 
 #include "../details/file_helper.h"
 #include "../details/null_mutex.h"
-#include "../sinks/base_sink.h"
+#include "base_sink.h"
 
 #include <mutex>
 #include <string>

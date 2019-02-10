@@ -6,13 +6,13 @@
 #pragma once
 
 #ifndef SPDLOG_H
-#include "spdlog/spdlog.h"
+#include "../spdlog.h"
 #endif
 
-#include "spdlog/details/fmt_helper.h"
-#include "spdlog/details/null_mutex.h"
-#include "spdlog/details/os.h"
-#include "spdlog/sinks/base_sink.h"
+#include "../details/fmt_helper.h"
+#include "../details/null_mutex.h"
+#include "../details/os.h"
+#include "base_sink.h"
 
 #include <android/log.h>
 #include <chrono>

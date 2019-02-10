@@ -11,7 +11,7 @@
 // This class is thread safe
 
 #include "../common.h"
-#include "../details/periodic_worker.h"
+#include "periodic_worker.h"
 #include "../logger.h"
 
 #ifndef SPDLOG_DISABLE_DEFAULT_LOGGER
