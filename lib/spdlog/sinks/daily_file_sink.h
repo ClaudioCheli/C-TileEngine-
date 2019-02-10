@@ -6,13 +6,13 @@
 #pragma once
 
 #ifndef SPDLOG_H
-#include "spdlog/spdlog.h"
+#include "../spdlog.h"
 #endif
 
-#include "spdlog/details/file_helper.h"
-#include "spdlog/details/null_mutex.h"
-#include "spdlog/fmt/fmt.h"
-#include "spdlog/sinks/base_sink.h"
+#include "../details/file_helper.h"
+#include "../details/null_mutex.h"
+#include "../fmt/fmt.h"
+#include "base_sink.h"
 
 #include <chrono>
 #include <cstdio>
