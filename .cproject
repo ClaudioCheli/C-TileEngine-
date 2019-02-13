@@ -53,6 +53,8 @@
                                     									
                                     <listOptionValue builtIn="false" value="&quot;D:\Development\C++ libraries\include\SDL2-2.0.5&quot;"/>
                                     									
+                                    <listOptionValue builtIn="false" value="&quot;D:\Development\C++ libraries\spdlog-1.x\include&quot;"/>
+                                    									
                                     <listOptionValue builtIn="false" value="&quot;D:\Development\C++ libraries\include\Simple OpenGL Image Library&quot;"/>
                                     									
                                     <listOptionValue builtIn="false" value="&quot;D:\Development\C++ libraries\include\glm&quot;"/>
