@@ -5,6 +5,7 @@
  *      Author: Claudio cheli
  */
 
+
 #include <iterator>
 #include <string>
 #include <memory>
@@ -22,35 +23,12 @@
 #include "builder/PlayerBuilder.h"
 #include "builder/TileMapBuilder.h"
 #include "logger/Logger.h"
-//#include "../lib/spdlog/sinks/basic_file_sink.h"
-//#include "../lib/spdlog/sinks/stdout_color_sinks.h"
 
 int main(int argc, char *argv[]) {
 	Logger::Init();
 	LOG_INFO("START");
 
-//	std::shared_ptr<spdlog::logger> logger;
-//	try {
-//		std::vector<spdlog::sink_ptr> sinks;
-//		sinks.push_back(std::make_shared<spdlog::sinks::stdout_color_sink_mt>());
-//		sinks.push_back(std::make_shared<spdlog::sinks::basic_file_sink_mt> ("logs/TELogger.log", false));
-//		auto logger = std::make_shared<spdlog::logger>("TELogger", begin(sinks), end(sinks));
-//
-//		logger->info("Hello spdlog {} {} {}", 1, 2, "three");
-//
-////		logger = spdlog::stdout_color_mt("TELogger");
-////		logger->sinks().push_back(spdlog::basic_logger_mt("TELogger", "logs/TELogger.log")->);
-////		logger = spdlog::basic_logger_mt("TELogger", "logs/TELogger.log");
-////		logger->sinks().push_back(
-////				std::make_shared<spdlog::sinks::stdout_color_sink_mt>());
-//	} catch (const spdlog::spdlog_ex &ex) {
-//		std::cout << "Log init failed: " << ex.what() << std::endl;
-//	}
-//
-//	logger->info("Test logger");
-
-
-	Logger::getLogger()->info("Test logger");
+	LOG_INFO("Test logger");
 
 	DisplayManager* display = new DisplayManager();
 	display->Init();

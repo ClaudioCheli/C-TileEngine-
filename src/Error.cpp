@@ -13,19 +13,19 @@ void glCheckError_(const char *file, int line){
 	if(error != GL_NO_ERROR){
 		switch(error){
 		case 1280:
-			std::cout << "glError: GL_INVALID_ENUM" << " | " << file << " (" << line << ")" << std::endl;
+			LOG_ERROR("glError: GL_INVALID_ENUM | {} ({})", file, line);
 			break;
 		case 1281:
-			std::cout << "glError: GL_INVALID_VALUE" << " | " << file << " (" << line << ")" << std::endl;
+			LOG_ERROR("glError: GL_INVALID_VALUE | {} ({})", file, line);
 			break;
 		case 1282:
-			std::cout << "glError: GL_INVALID_OPERATION" << " | " << file << " (" << line << ")" << std::endl;
+			LOG_ERROR("glError: GL_INVALID_OPERATION | {} ({})", file, line);
 			break;
 		case 1286:
-			std::cout << "glError: GL_INVALID_FRAMEBUFFER_OPERATION" << " | " << file << " (" << line << ")" << std::endl;
+			LOG_ERROR("glError: GL_INVALID_FRAMEBUFFER_OPERATION | {} ({})", file, line);
 			break;
 		default:
-			std::cout << "glError: " << error << " | " << file << " (" << line << ")" << std::endl;
+			LOG_ERROR("glError: {} | {} ({})", error, file, line);
 		}
 
 		exit(1);
@@ -57,7 +57,7 @@ void tinyxmlError(int errorID){
 		case 19: error = "XML_NO_TEXT_NODE"; 					break;
 		case 20: error = "XML_ERROR_COUNT"; 					break;
 		}
-		std::cout << "tinyxml Error: " << error << std::endl;
+		LOG_ERROR("tinyxml Error: {}", error);
 	}
 }
 

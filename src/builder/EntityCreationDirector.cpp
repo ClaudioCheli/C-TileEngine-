@@ -7,26 +7,27 @@
 
 #include "EntityCreationDirector.h"
 #include "../Error.h"
+#include "../logger/Logger.h"
 
 void EntityCreationDirector::createEntity(){
-	std::cout << "------------Start entity creation------------" << std::endl;
+	LOG_INFO("------------Start entity creation------------");
 	builder->createEntity();
 	glCheckError();
-	std::cout << "------------entity created------------" << std::endl;
+	LOG_INFO("------------entity created------------");
 	builder->createTile();
 	glCheckError();
-	std::cout << "------------tile created------------" << std::endl;
+	LOG_INFO("------------tile created------------");
 	builder->createTileset();
 	glCheckError();
-	std::cout << "------------tileset created------------" << std::endl;
+	LOG_INFO("------------tileset created------------");
 	builder->createAnimation();
 	glCheckError();
-	std::cout << "------------animation created------------" << std::endl;
+	LOG_INFO("------------animation created------------");
 	builder->createShader();
 	glCheckError();
-	std::cout << "------------shader created------------" << std::endl;
+	LOG_INFO("------------shader created------------");
 	builder->bindBuffers();
 	glCheckError();
-	std::cout << "------------buffer binded------------" << std::endl;
+	LOG_INFO("------------buffer binded------------");
 }
 

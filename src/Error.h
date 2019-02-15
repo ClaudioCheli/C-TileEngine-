@@ -14,6 +14,7 @@
 #include <iostream>
 
 #include "../lib/tinyxml2/tinyxml2.h"
+#include "logger/Logger.h"
 
 /*void check_(const char *file, int line){
 	std::cout << file << " (" << line << ")" << std::endl;

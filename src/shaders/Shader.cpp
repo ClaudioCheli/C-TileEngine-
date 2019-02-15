@@ -19,7 +19,7 @@ std::string Shader::loadShader(std::string shaderPath){
 		shaderFile.close();
 		shaderSource = shaderStream.str();
 	}catch(std::ifstream::failure &e){
-		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+		LOG_ERROR("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
 	}
 
 	return shaderSource;
@@ -37,10 +37,10 @@ GLuint Shader::compileShader(GLuint shaderTipe, std::string shaderSource){
 	glGetShaderInfoLog(shaderID, 512, NULL, infoLog);
 	switch (shaderTipe){
 	case GL_VERTEX_SHADER:
-		std::cout <<"Vertex Shader info: " << infoLog << std::endl;
+		LOG_DEBUG("Vertex Shader info: {}", infoLog);
 		break;
 	case GL_FRAGMENT_SHADER:
-		std::cout << "Fragment Shader info: " << infoLog << std::endl;
+		LOG_DEBUG("Fragment Shader info: {}", infoLog);
 		break;
 	}
 
@@ -50,10 +50,10 @@ GLuint Shader::compileShader(GLuint shaderTipe, std::string shaderSource){
 	    glGetShaderInfoLog(shaderID, 512, NULL, infoLog);
 	    switch (shaderTipe){
 	    case GL_VERTEX_SHADER:
-	    	std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+	    	LOG_ERROR("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n{}", infoLog);
 			break;
 	    case GL_FRAGMENT_SHADER:
-	    	std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+	    	LOG_ERROR("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n{}", infoLog);
 			break;
 	    }
 	    exit(1);
@@ -72,7 +72,7 @@ GLuint Shader::linkToProgram(int vertexShaderID, int fragmentShaderID){
 	if(!success)
 	{
 	    glGetProgramInfoLog(programID, 512, NULL, infoLog);
-	    std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+	    LOG_ERROR("ERROR::SHADER::PROGRAM::LINKING_FAILED\n{}", infoLog);
 	    exit(2);
 	}
 	return programID;
